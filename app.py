@@ -1,5 +1,6 @@
 from PIL import Image, ImageOps
 from flask import Flask, request
+from flask_cors import CORS
 import tensorflow as tf
 import io
 #
@@ -7,6 +8,7 @@ import io
 import numpy as np
 
 app = Flask(__name__)
+CORS(app)
 #
 class_names = ['T-shirt/top', 'Pantalon', 'Pullover', 'Robe', 'Manteau',
                'Sandale', 'Chemise', 'Sneaker', 'Sac', 'Bottine']
@@ -42,7 +44,7 @@ def predictAnnImage(img):
     img = processAnnImage(img,28)
     predictions = model.predict(img)
     top_class = class_names[np.argmax(predictions[0])]
-    return f"Predicted class :{top_class} with a Probability of {np.max(predictions):.2f}"
+    return f"Predicted class {top_class} with a Probability of {np.max(predictions):.2f} 🙂"
 
 
 def predictCnnImage(img):
@@ -87,4 +89,4 @@ def home():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,host="192.168.11.104")
